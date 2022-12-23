@@ -22,7 +22,7 @@ function List() {
             await getAllUsersRedux(user?.accessToken, dispatch, axiosJWT, navigate);
         };
         fetch();
-    }, [ user]);
+    }, [dispatch, navigate, user]);
     return (
         <>
             <DatatableUser />

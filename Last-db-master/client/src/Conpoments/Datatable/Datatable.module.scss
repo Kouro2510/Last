@@ -2,7 +2,7 @@
     height: 620px;
     width: 100%;
     padding: 20px;
-    font-size: 1.5rem !important;
+    font-size: 0.5rem !important;
 
     .datatable-title {
         width: 100%;
@@ -14,10 +14,10 @@
         justify-content: space-between;
 
         .link {
-            color: green;
+            color: #d70f0f;
             font-size: 16px;
             font-weight: 400;
-            border: 1px solid green;
+            border: 1px solid #bb1616;
             padding: 5px;
             border-radius: 5px;
             cursor: pointer;
@@ -74,6 +74,8 @@
     }
     .customTable {
         font-size: 1.5rem !important;
+        text-align: center !important;
+
     }
 
     .cell-action {
@@ -81,20 +83,8 @@
         align-items: center;
         gap: 15px;
 
-        .view-button {
-            cursor: pointer;
-            pad: 2px 5px;
-            border-radius: 5px;
-            color: darkblue;
-            border: 1px dotted rgba(0, 0, 139, 0.596);
-        }
-
         .delete-button {
-            cursor: pointer;
-            pad: 2px 5px;
-            border-radius: 5px;
             color: crimson;
-            border: 1px dotted rgba(228, 10, 10, 0.596);
         }
     }
 }

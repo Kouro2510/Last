@@ -6,8 +6,6 @@ import {PersistGate} from "redux-persist/integration/react";
 import {persistor, store} from './redux/store';
 import {Provider} from 'react-redux';
 import {BrowserRouter} from "react-router-dom";
-import 'animate.css';
-import './Langue/i18n.js'
 import 'react-toastify/dist/ReactToastify.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';

@@ -10,8 +10,9 @@ import {IoCarSportSharp} from "react-icons/io5";
 import {TfiLayoutSliderAlt} from "react-icons/tfi";
 import {GiFlatTire} from "react-icons/gi";
 import {MdLogout} from "react-icons/md";
-import Image from "../../Asset/Image"
 import {useSelector} from "react-redux";
+import Tippy from '@tippyjs/react/headless';
+import images from "../../Asset/Image";
 const SideBar = () => {
     const [open, setOpen] = useState(true);
     const [isPasswordShow, setIsPasswordShow] = useState(false);
@@ -51,15 +52,23 @@ const SideBar = () => {
             </div>
             <div className="flex flex-row mb-3 pb-1">
                 <div className={`flex items-center space-x-4 ${!open && "mt-5 mb-5"}`}>
-                    <img src={user?.photo ? user.photo : Image.noImage} className={`w-10 h-10 rounded-full ${!open && "left-4.5 w-8 h-8 absolute"}`} alt="/"/>
+                    <Tippy
+                        render={(attrs) => (<div className="box" tabIndex="-1" {...attrs}>
+
+                        </div>)}>
+                            <img
+                                src={user?.photo ? user.photo : images.noImage}
+                                alt=""
+                                className={`w-10 h-10 rounded-full ${!open && "left-4.5 w-8 h-8 absolute"}`}
+                            />
+                    </Tippy>
                 </div>
 
                 <h2 style={{transitionDelay: `200ms`,}}
-                    className={`ml-12 mt-2 whitespace-pre uppercase duration-500 ${!open && "opacity-0 translate-x-28 overflow-hidden uppercase"}`}>Admin</h2>
+                    className={`ml-12 mt-2 whitespace-pre uppercase duration-500 ${!open && "opacity-0 translate-x-28 overflow-hidden uppercase"}`}>{user?.firstname ? user.firstname : " "} </h2>
                 <h2 className={`${open && "hidden"} uppercase absolute left-48 bg-white font-semibold whitespace-pre
                     text-gray-900 rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1
-                    group-hover:left-14 group-hover:duration-300 group-hover:w-fit `}>
-                    Admin</h2>
+                    group-hover:left-14 group-hover:duration-300 group-hover:w-fit `}>Test</h2>
             </div>
             <hr className="w-full"/>
             <ul className="mt-3">

@@ -189,7 +189,7 @@ export const handleEditUser = async (data, accessToken, dispatch, axiosJWT) => {
 export const deleteUserById = async (id, accessToken, dispatch, axiosJWT) => {
     dispatch(deleteUserStart());
     try {
-        const res = await axiosJWT.delete(`http://localhost:3030/api/deleteUser?id=${id}`, {
+        const res = await axiosJWT.delete(`api/deleteUser?id=${id}`, {
             headers: { token: `Bearer ${accessToken}` },
         });
         if (res.data.errCode === 0) {

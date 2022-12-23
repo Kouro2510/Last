@@ -90,7 +90,7 @@ function ModalUser({ isOpen, FuncToggleModal }) {
             });
         }
     }, [userRedux]);
-
+    console.log(userRedux)
     let subtitle;
 
     const afterOpenModal = () => {

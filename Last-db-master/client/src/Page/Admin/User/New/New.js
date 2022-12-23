@@ -99,8 +99,11 @@ function New() {
         <>
             <div className={`dark:text-white dark:placeholder-white ${cx('new')}`}>
                 <div className={cx('new-container')}>
-                    <div className={cx('top')}>
+                    <div className={`relative ${cx('top')}`}>
                         <h1 className="text-blue-900">Add new user</h1>
+                        <button type="button"  onClick={(e) => handleSaveUser(e)} className="absolute right-6 top-2  inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                            Send
+                        </button>
                     </div>
                     <div className={cx('bottom')}>
                         <div className={`${cx('left')} relative`}>
@@ -146,14 +149,28 @@ function New() {
                                         placeholder="Last Name"
                                     />
                                 </div>
-                                <div className={cx('form-input')}>
-                                    <label>Gender</label>
-                                    <select name="gender" className="dark:text-gray-900" onChange={(e) => handleOnchangeInput(e, 'gender')} required>
-                                        <option className="dark:text-gray-900" value=""> Select Gender </option>
-                                        <option className="dark:text-gray-900" value={state.gender}> Male </option>
-                                        <option className="dark:text-gray-900" value={state.gender}> Female </option>
-                                    </select>
-                                </div>
+                               <div className={`flex gap-24 ${cx('form-input')}`}>
+                                   <div className={` ${cx('form-input')}`}>
+                                       <div>
+                                           <label>Gender</label>
+                                           <select name="gender" className="dark:text-gray-900" onChange={(e) => handleOnchangeInput(e, 'gender')} required>
+                                               <option className="dark:text-gray-900" value=""> Select Gender </option>
+                                               <option className="dark:text-gray-900" value="Male"> Male </option>
+                                               <option className="dark:text-gray-900" value="Female"> Female </option>
+                                           </select>
+                                       </div>
+                                   </div>
+                                   <div className={` ${cx('form-input')}`}>
+                                       <div>
+                                           <label>Role</label>
+                                           <select name="role" className="dark:text-gray-900" onChange={(e) => handleOnchangeInput(e, 'role')} required>
+                                               <option className="dark:text-gray-900" value=""> Select Role </option>
+                                               <option className="dark:text-gray-900" value="Admin"> Admin </option>
+                                               <option className="dark:text-gray-900" value="Employee"> Employ </option>
+                                           </select>
+                                       </div>
+                                   </div>
+                               </div>
                                 <div className={cx('form-input')}>
                                     <label>Email</label>
                                     <input
@@ -191,9 +208,6 @@ function New() {
                                     />
                                 </div>
                             </form>
-                            <button type="button"  onClick={(e) => handleSaveUser(e)} className=" mt-6 inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
-                                Send
-                            </button>
                         </div>
                     </div>
                 </div>

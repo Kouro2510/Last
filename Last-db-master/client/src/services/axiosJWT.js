@@ -4,9 +4,9 @@ import { refreshToken } from '.';
 const { default: axios } = require('axios');
 
 export const axiosMiddle = (jwt_decode, token, user, dispatch) => {
-    let axiosJWT = axios?.create({baseURL: process.env.REACT_APP_BACKEND_URL});
+    let axiosJWT = axios.create({baseURL: process.env.REACT_APP_BACKEND_URL});
 
-    axiosJWT?.interceptors?.request.use(
+    axiosJWT.interceptors.request.use(
         async (config) => {
             let date = new Date();
             const decodeToken = jwt_decode(token);

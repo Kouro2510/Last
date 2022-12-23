@@ -24,7 +24,10 @@ function DatatableUser() {
 
     const [idUser, setIdUser] = useState();
     const data = useMovieData();
-
+    const handleEdit=(params)=>{
+        setIdUser(idUser ? null : params.row.id);
+        navigate(config.routes.edit);
+    }
     const handleRowClick = (params) => {
         setIdUser(idUser ? null : params.row.id);
         setCheckBoxSelection(!checkBoxSelection);
@@ -34,10 +37,11 @@ function DatatableUser() {
             let allUser = allUsers.map((item) => {
                 return {
                     id: item.id,
-                    username: `${item.firstName} ${item.lastName}`,
-                    status: 'active',
+                    username: item.username,
+                    firstname: item.firstName,
+                    lastname:item.lastName,
                     email: item.email,
-                    image: item.Image.photo,
+                    image: item.Image?.photo,
                     gender: item.gender,
                     address: item.address,
                     role: item.roleId,
@@ -48,23 +52,31 @@ function DatatableUser() {
             setRows(allUser);
         }
     }, [allUsers]);
-
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
+        { field: 'username', headerName: 'Username', width: 200 },
         {
-            field: 'user',
-            headerName: 'User',
-            width: 230,
+            field: 'firstname',
+            headerName: 'First',
+            width: 150,
+        },
+        {
+            field: 'lastname',
+            headerName: 'Name',
+            width: 150,
+        },
+        {
+            headerName: 'Avatar',
+            width: 100,
             renderCell: (params) => {
                 return (
                     <>
-                        <div className={cx('cellWithImg')}>
+                        <div className={` ${cx('cellWithImg')}`}>
                             <img
-                                className={cx('cellImg')}
+                                className={`ml-4 ${cx('cellImg')}`}
                                 src={params.row.image ? params.row.image : images.noImage}
                                 alt="avatar"
                             />
-                            {params.row.username}
                         </div>
                     </>
                 );
@@ -102,14 +114,8 @@ function DatatableUser() {
             renderCell: (params) => {
                 return (
                     <>
-                        <div className={cx('cell-action')}>
-                            <div className={cx('view-button')} onClick={() => handleSubmit(params.row.id)}>
-                                View
-                            </div>
-                            <div className={cx('delete-button')} onClick={() => handleDeleteUser(params.row.id)}>
-                                Delete
-                            </div>
-                        </div>
+                        <button className={`inline-block px-6 py-2 text-blue-600  font-medium text-xs leading-tight uppercase rounded shadow-md   active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out   gap-12 ${cx('view-button')}`} onClick={() => handleSubmit(params.row.id)}>View</button>
+                        <button className={`inline-block px-6 py-2 text-red-600  font-medium text-xs leading-tight uppercase rounded shadow-md   active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ${cx('delete-button')}`} onClick={() => handleDeleteUser(params.row.id)}>Delete</button>
                     </>
                 );
             },
@@ -138,9 +144,9 @@ function DatatableUser() {
         <>
             <div className={cx('datatable')}>
                 <div className={cx('datatable-title')}>
-                    List User
+                   <h3 className="text-black ">List Employee</h3>
                     {idUser ? (
-                        <Link to={config.routes.new} className={cx('link')}>
+                        <Link to={config.routes.edit}  onClick={() => handleEdit(setIdUser)} className={` ${cx('link')}`}>
                             Edit User
                         </Link>
                     ) : (
@@ -150,7 +156,7 @@ function DatatableUser() {
                     )}
                 </div>
                 <DataGrid
-                    className={cx('customTable')}
+                    className={`dark:text-white dark:border-b-blue-50  ${cx('customTable')}`}
                     onRowClick={handleRowClick}
                     {...data}
                     rows={rows}

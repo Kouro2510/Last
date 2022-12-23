@@ -1,7 +1,6 @@
 const db = require('../models/index');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const {Op} = require("sequelize");
 
 //Check
 let checkUsername = (username) => {
@@ -85,7 +84,7 @@ let UserLogin = (username, password) => {
                             },
                         );
                         if (user?.Image?.photo) {
-                            user.Image.photo = new Buffer(user.Image.photo, 'base64').toString('binary');
+                            user.Image.photo = new Buffer(user?.Image?.photo, 'base64').toString('binary');
                         }
 
                         userData.errCode = 0;
@@ -134,7 +133,7 @@ let Logout = (id) => {
         }
     });
 };
-let RefreshToken = (refreshToken) => {
+let RefreshToken = (refreshToken,refreshTokenOld) => {
     return new Promise(async (resolve, reject) => {
         try {
             let user = await db.User.findOne({
@@ -158,7 +157,7 @@ let RefreshToken = (refreshToken) => {
                         rememberToken: newFreshToken,
                     },
                     {
-                        where: { id: user.id },
+                        where: { rememberToken: refreshTokenOld },
                     },
                 );
 

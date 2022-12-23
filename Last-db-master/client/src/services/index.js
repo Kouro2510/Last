@@ -33,8 +33,7 @@ export const login = async (username, password) => {
 
 export const loginCustomer = async (email, password) => {
     try {
-        const res = await request.post('/api/loginCustomer', { email, password });
-        return res;
+        return await request.post('/api/loginCustomer', {email, password});
     } catch (error) {
         console.log(error);
     }
@@ -59,10 +58,9 @@ export const getUserInfo = async (id) => {
 
 export const refreshToken = async () => {
     try {
-        const res = await request.post('/api/refreshToken', {
+        return await request.post('/api/refreshToken', {
             "withCredentials": true,
         });
-        return res;
     } catch (error) {
         console.log(error);
     }
@@ -70,8 +68,7 @@ export const refreshToken = async () => {
 
 export const getAllBrandFilter = async () => {
     try {
-        const res = await request.get('/api/getAllBrands');
-        return res;
+        return await request.get('/api/getAllBrands');
     } catch (error) {
         console.log(error);
     }
@@ -97,8 +94,7 @@ export const getProductInfo = async (id) => {
 
 export const getTurnover = async (date) => {
     try {
-        const res = await request.get(`/api/getTurnover?date=${date}`);
-        return res;
+        return await request.get(`/api/getTurnover?date=${date}`);
     } catch (error) {
         console.log(error);
     }
@@ -106,8 +102,7 @@ export const getTurnover = async (date) => {
 
 export const getTurnoverWeek = async () => {
     try {
-        const res = await request.get(`/api/getTurnoverWeek`);
-        return res;
+        return await request.get(`/api/getTurnoverWeek`);
     } catch (error) {
         console.log(error);
     }
