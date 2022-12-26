@@ -9,6 +9,7 @@ import New from "~/Page/Admin/User/New/New";
 import {ToastContainer} from "react-toastify";
 import Home from "~/Page/Web/Home";
 import EditUser from "~/Page/Admin/User/Edit/Edit";
+import Brands from "~/Page/Admin/Brand/Render/Brand";
 
 
 function App() {
@@ -26,6 +27,16 @@ function App() {
                    />
                </Route>
                <Route path={config.routes.home} element={<Home/>}/>
+               <Route path={config.routes.brands}>
+                   <Route
+                       index
+                       element={
+                           <LayoutDashBoard>
+                               <Brands />
+                           </LayoutDashBoard>
+                       }
+                   />
+               </Route>
            </Routes>
            <ToastContainer
                position="top-right"

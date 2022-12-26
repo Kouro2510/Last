@@ -24,7 +24,6 @@ function Single() {
         lastName: '',
         email: '',
         phonenumber: '',
-        positionId: '',
         address: '',
     });
 
@@ -86,7 +85,7 @@ function Single() {
     };
     return (
         <>
-            <div className={cx('top')}>
+            <div className={`${cx('top')} dark:text-white`}>
                 <div className={cx('left')}>
                     <div className={cx('edit-button')} onClick={() => OpenModal()}>
                         Edit
@@ -106,11 +105,7 @@ function Single() {
                             </div>
                             <div className={cx('details-item')}>
                                 <span className={cx('item-key')}>Phone:</span>
-                                <span className={cx('item-value')}>{detailUser?.phonenumber}</span>
-                            </div>
-                            <div className={cx('details-item')}>
-                                <span className={cx('item-key')}>PositionId:</span>
-                                <span className={cx('item-value')}>{detailUser?.positionId}</span>
+                                <span className={cx('item-value')}>{detailUser?.phoneNumber}</span>
                             </div>
                             <div className={cx('details-item')}>
                                 <span className={cx('item-key')}>Address:</span>

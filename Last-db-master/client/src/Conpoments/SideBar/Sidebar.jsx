@@ -13,6 +13,7 @@ import {MdLogout} from "react-icons/md";
 import {useSelector} from "react-redux";
 import Tippy from '@tippyjs/react/headless';
 import images from "../../Asset/Image";
+import config from "~/config";
 const SideBar = () => {
     const [open, setOpen] = useState(true);
     const [isPasswordShow, setIsPasswordShow] = useState(false);
@@ -21,7 +22,7 @@ const SideBar = () => {
         {name: "Blog", link: "/admin/blog", icon: <BsNewspaper size="20"/>, group: "Blog"},
         {name: "Employee", link: "/admin/employee", icon: <FaUsers size="20"/>, group: "User"},
         {name: "Customer", link: "/admin/customer", icon:<FiUser size="20"/>, group: "User"},
-        {name: "Brand", link: "/admin/brand", icon:<AiFillTags size="20"/>, group: "Product"},
+        {name: "Brand", link: config.routes.brands, icon:<AiFillTags size="20"/>, group: "Product"},
         {name: "Car", link: "/admin/car", icon: <IoCarSportSharp size="20"/>, group: "Product"},
         {name: "Banner", link: "/admin/banner", icon: <TfiLayoutSliderAlt size="20"/>, group: "Website"},
         {name: "Car Item", link: "/admin/caritem", icon: <GiFlatTire size="20"/>, group: "Product"},
