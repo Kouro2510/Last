@@ -8,7 +8,6 @@ import Single from "~/Conpoments/Single/Single";
 import New from "~/Page/Admin/User/New/New";
 import {ToastContainer} from "react-toastify";
 import Home from "~/Page/Web/Home";
-import EditUser from "~/Page/Admin/User/Edit/Edit";
 import Brands from "~/Page/Admin/Brand/Render/Brand";
 
 
