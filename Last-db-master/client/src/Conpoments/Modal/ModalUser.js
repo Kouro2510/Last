@@ -3,7 +3,6 @@ import classNames from 'classnames/bind';
 import Modal from 'react-modal';
 import { useEffect, useState } from 'react';
 import images from "~/Asset/Image";
-import { DriveFolderUploadOutlined } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 import CommonUtils from '~/utils/CommonUtlis';
 import { useDispatch } from 'react-redux';
@@ -15,6 +14,7 @@ import { refreshToken } from '~/services';
 import {getDetailUser, handleEditUser} from '~/redux/apiReques';
 import { toast } from 'react-toastify';
 import config from "~/config";
+import {AiFillFolderAdd} from "react-icons/ai";
 
 const cx = classNames.bind(styles);
 
@@ -34,7 +34,7 @@ const customStyles = {
 function EditUser({ isOpen, FuncToggleModal }) {
     const userRedux = useSelector((state) => state.user.userInfo?.user);
     const user = useSelector((state) => state.auth.login?.currentUser);
-
+    let [reviewAvatar, setReviewAvatar] = useState('');
     let [state, setState] = useState({
         id: 0,
         firstName: '',
@@ -113,6 +113,7 @@ function EditUser({ isOpen, FuncToggleModal }) {
                 ...state,
                 avatar: base64,
             });
+            setReviewAvatar(e);
         }
     };
     const handleSaveUser = async () => {
@@ -128,7 +129,9 @@ function EditUser({ isOpen, FuncToggleModal }) {
     const handleOnchangeInput = (e, id) => {
         e.preventDefault();
         let copyState = { ...state };
+
         copyState[id] = e.target.value;
+
         setState(copyState);
     };
 
@@ -152,20 +155,30 @@ function EditUser({ isOpen, FuncToggleModal }) {
                         <h1>Edit user</h1>
                     </div>
                     <div className={cx('bottom')}>
-                        <div className={cx('left')}>
-                            <img src={state.avatar ? state.avatar : images.noImage} alt="" />
+                        <div className={`${cx('left')} relative`}>
+                            <img src={reviewAvatar ? reviewAvatar : images.noImage} alt=""  />
+                            <div className={cx('form-input')}>
+                                <label htmlFor="file" className="absolute right-8 top-60">
+                                    <AiFillFolderAdd className={`dark:fill-white ${cx('icon')} fill-gray-700`} size="40"/>
+                                </label>
+                                <input
+                                    onChange={(e) => handleOnchangeImg(e)}
+                                    type="file"
+                                    id="file"
+                                    style={{ display: 'none' }}
+                                />
+                            </div>
                         </div>
                         <div className={cx('right')}>
                             <form>
                                 <div className={cx('form-input')}>
-                                    <label htmlFor="file">
-                                        Image: <DriveFolderUploadOutlined className={cx('icon')} />
-                                    </label>
+                                    <label>User Name</label>
                                     <input
-                                        onChange={(e) => handleOnchangeImg(e)}
-                                        type="file"
-                                        id="file"
-                                        style={{ display: 'none' }}
+                                        value={state.username}
+                                        disabled
+                                        onChange={(e) => handleOnchangeInput(e, 'username')}
+                                        type="text"
+                                        placeholder="User name"
                                     />
                                 </div>
                                 <div className={cx('form-input')}>
@@ -186,14 +199,27 @@ function EditUser({ isOpen, FuncToggleModal }) {
                                         placeholder="Last Name"
                                     />
                                 </div>
-                                <div className={cx('form-input')}>
-                                    <label>Gender</label>
-                                    <input
-                                        value={state.gender}
-                                        onChange={(e) => handleOnchangeInput(e, 'gender')}
-                                        type="text"
-                                        placeholder="Male or female"
-                                    />
+                                <div className={`flex gap-24 ${cx('form-input')}`}>
+                                    <div className={` ${cx('form-input')}`}>
+                                        <div>
+                                            <label>Gender</label>
+                                            <select name="gender" className="dark:text-gray-900" onChange={(e) => handleOnchangeInput(e, 'gender')} required>
+                                                <option className="dark:text-gray-900" value=""> Select Gender </option>
+                                                <option className="dark:text-gray-900" value="Male"> Male </option>
+                                                <option className="dark:text-gray-900" value="Female"> Female </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className={` ${cx('form-input')}`}>
+                                        <div>
+                                            <label>Role</label>
+                                            <select name="role" className="dark:text-gray-900" onChange={(e) => handleOnchangeInput(e, 'role')} required>
+                                                <option className="dark:text-gray-900" value=""> Select Role </option>
+                                                <option className="dark:text-gray-900" value="Admin"> Admin </option>
+                                                <option className="dark:text-gray-900" value="Employee"> Employ </option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className={cx('form-input')}>
                                     <label>Email</label>
@@ -201,24 +227,25 @@ function EditUser({ isOpen, FuncToggleModal }) {
                                         value={state.email}
                                         onChange={(e) => handleOnchangeInput(e, 'email')}
                                         type="email"
-                                        placeholder="Email ex exmple@gmail.com"
+                                        placeholder="email@gmail.com"
                                     />
                                 </div>
                                 <div className={cx('form-input')}>
                                     <label>Phone</label>
                                     <input
-                                        value={state.phonenumber}
-                                        onChange={(e) => handleOnchangeInput(e, 'phonenumber')}
+                                        value={state.phoneNumber}
+                                        onChange={(e) => handleOnchangeInput(e, 'phoneNumber')}
                                         type="text"
-                                        placeholder="07954564152"
+                                        placeholder="0123456789"
                                     />
                                 </div>
                                 <div className={cx('form-input')}>
                                     <label>Password</label>
                                     <input
-                                        value="********"
+                                        value={state.password}
                                         onChange={(e) => handleOnchangeInput(e, 'password')}
                                         type="password"
+                                        placeholder="*********** "
                                     />
                                 </div>
                                 <div className={cx('form-input')}>
@@ -227,7 +254,7 @@ function EditUser({ isOpen, FuncToggleModal }) {
                                         value={state.address}
                                         onChange={(e) => handleOnchangeInput(e, 'address')}
                                         type="text"
-                                        placeholder="Address"
+                                        placeholder="Ho Chi Minh"
                                     />
                                 </div>
                                 <div className={cx('btnSave')} onClick={(e) => handleSaveUser(e)}>

@@ -126,12 +126,6 @@ let CreateEmployee  = (data) => {
 let EditUser = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.id||!data.email||!data.firstName || !data.lastName ||!data.address|| !data.role || !data.gender || !data.phonenumber) {
-                resolve({
-                    errCode: 2,
-                    errMessage: 'Missing required parameter!',
-                });
-            }
 
             let user = await db.User.findOne({
                 where: { id: data.id },
@@ -143,7 +137,7 @@ let EditUser = (data) => {
                     {
                         firstName: data.firstName,
                         lastName: data.lastName,
-                        phonenumber: data.phonenumber,
+                        phoneNumber: data.phoneNumber,
                         address: data.address,
                         role: data.role,
                         image: data.avatar,

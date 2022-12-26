@@ -13,7 +13,7 @@ const cx = classNames.bind(styles);
 
 const customStyles = {
     content: {
-        height: '350px',
+        height: '400px',
         width: '900px',
         top: '50%',
         left: '50%',

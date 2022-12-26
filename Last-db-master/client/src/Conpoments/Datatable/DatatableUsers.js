@@ -9,11 +9,10 @@ import images from "~/Asset/Image";
 import {Link, useNavigate} from 'react-router-dom';
 import config from '~/config';
 import jwt_decode from 'jwt-decode';
-import { deleteUserById } from '~/redux/apiReques';
+import {deleteUserById} from '~/redux/apiReques';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { axiosMiddle } from '~/services/axiosJWT';
-import ModalUser from "~/Conpoments/Modal/ModalUser";
 
 const cx = classNames.bind(styles);
 function DatatableUser() {
@@ -25,10 +24,6 @@ function DatatableUser() {
 
     const [idUser, setIdUser] = useState();
     const data = useMovieData();
-    const handleEdit=(params)=>{
-        setIdUser(idUser ? null : params.row.id);
-        navigate(config.routes.edit);
-    }
     const handleRowClick = (params) => {
         setIdUser(idUser ? null : params.row.id);
         setCheckBoxSelection(!checkBoxSelection);
@@ -115,20 +110,8 @@ function DatatableUser() {
             renderCell: (params) => {
                 return (
                     <>
-                        <button className={`inline-block px-6 py-2 text-blue-600  font-medium text-xs leading-tight uppercase rounded shadow-md   active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out   gap-12 ${cx('view-button')}`}  onClick={() => OpenModal(params.row.id)}>Edit</button>
-                        <button className={`inline-block px-6 py-2 text-red-600  font-medium text-xs leading-tight uppercase rounded shadow-md   active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ${cx('delete-button')}`} onClick={() => handleDeleteUser(params.row.id)}>Delete</button>
-                    </>
-                );
-            },
-        },
-        {
-            field: 'Details',
-            headerName: 'Details',
-            width: 100,
-            renderCell: (params) => {
-                return (
-                    <>
                         <button className={`inline-block px-6 py-2 text-blue-600  font-medium text-xs leading-tight uppercase rounded shadow-md   active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out   gap-12 ${cx('view-button')}`} onClick={() => handleSubmit(params.row.id)}>View</button>
+                        <button className={`inline-block px-6 py-2 text-red-600  font-medium text-xs leading-tight uppercase rounded shadow-md   active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ${cx('delete-button')}`} onClick={() => handleDeleteUser(params.row.id)}>Delete</button>
                     </>
                 );
             },
@@ -141,6 +124,8 @@ function DatatableUser() {
     const handleSubmit = (user) => {
         navigate(`details/${user}`);
     };
+
+
     const handleDeleteUser = async (id) => {
         let axiosJWT = await axiosMiddle(jwt_decode, user?.accessToken, user, dispatch);
         let res = await deleteUserById(id, user?.accessToken, dispatch, axiosJWT);
@@ -151,26 +136,14 @@ function DatatableUser() {
             toast.error(res.errMessage);
         }
     };
-    const OpenModal = (user) => {
-        navigate(`edit/${user}`);
-    };
-    const toggleModal = () => {
-        setIsOpen(!isOpen);
-    };
     return (
         <>
             <div className={cx('datatable')}>
                 <div className={cx('datatable-title')}>
                    <h3 className="text-black ">List Employee</h3>
-                    {idUser ? (
-                        <Link to={config.routes.edit}  onClick={() => handleEdit(setIdUser)} className={` ${cx('link')}`}>
-                            Edit User
-                        </Link>
-                    ) : (
                         <Link to={config.routes.new} className={cx('link')}>
                             Add New User
                         </Link>
-                    )}
                 </div>
                 <DataGrid
                     className={`dark:text-white dark:border-b-blue-50  ${cx('customTable')}`}
@@ -183,7 +156,6 @@ function DatatableUser() {
                     rowsPerPageOptions={[9]}
                 />
             </div>
-            <ModalUser isOpen={isOpen} FuncToggleModal={() => toggleModal()} />
         </>
     );
 }

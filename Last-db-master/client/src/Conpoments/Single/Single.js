@@ -35,8 +35,7 @@ function Single() {
                 firstName: userRedux.firstName,
                 lastName: userRedux.lastName,
                 email: userRedux.email,
-                phonenumber: userRedux.phonenumber,
-                positionId: userRedux.positionId,
+                phoneNumber: userRedux.phoneNumber,
                 address: userRedux.address,
             });
         }

@@ -1,11 +1,12 @@
 import styles from './ModalUser.module.scss';
 import classNames from 'classnames/bind';
+import Modal from 'react-modal';
 import { useEffect, useState } from 'react';
 import images from "~/Asset/Image";
 import { useSelector } from 'react-redux';
 import CommonUtils from '~/utils/CommonUtlis';
 import { useDispatch } from 'react-redux';
-import {useNavigate, useParams} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import { loginSuccess } from '~/redux/authSlice';
@@ -17,46 +18,38 @@ import {AiFillFolderAdd} from "react-icons/ai";
 
 const cx = classNames.bind(styles);
 
+const customStyles = {
+    content: {
+        height: '650px',
+        width: '900px',
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+    },
+};
 
-
-function EditUser() {
-    const { id } = useParams();
+function EditUser({ isOpen, FuncToggleModal }) {
     const userRedux = useSelector((state) => state.user.userInfo?.user);
     const user = useSelector((state) => state.auth.login?.currentUser);
     let [reviewAvatar, setReviewAvatar] = useState('');
     let [state, setState] = useState({
-        image: '',
-        username:'',
+        id: 0,
         firstName: '',
         lastName: '',
-        email: '',
-        password:'',
-        gender:'',
-        role:'',
-        phoneNumber: '',
         address: '',
+        gender: '',
+        email: '',
+        password: '',
+        phonenumber: '',
+        avatar: '',
+        role: '',
     });
 
-    useEffect(() => {
-        if (userRedux) {
-            setState({
-                username: userRedux?.username,
-                image: userRedux?.Image.photo,
-                firstName: userRedux.firstName,
-                lastName: userRedux.lastName,
-                email: userRedux.email,
-                password: userRedux.password,
-                gender:userRedux.gender,
-                role:userRedux.role,
-                phoneNumber: userRedux.phoneNumber,
-                address: userRedux.address,
-            });
-        }
-    }, [ userRedux]);
-
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-
+    const navigate=useNavigate();
     let axiosJWT = axios.create({
         baseURL: process.env.REACT_APP_BACKEND_URL,
     });
@@ -80,33 +73,54 @@ function EditUser() {
             return Promise.reject(err);
         },
     );
-
     useEffect(() => {
         if (!user) {
             navigate(config.routes.login);
         }
         const fetch = async () => {
-            await getDetailUser(id, user?.accessToken, dispatch, axiosJWT);
+            await getDetailUser( user?.accessToken, dispatch, axiosJWT);
         };
-        fetch().then(r => r);
-    }, [axiosJWT, dispatch, id, navigate, user]);
+        fetch();
+    }, [isOpen, user]);
+    useEffect(() => {
+        if (userRedux) {
+            setState({
+                id: userRedux.id,
+                firstName: userRedux.firstName,
+                lastName: userRedux.lastName,
+                address: userRedux.address,
+                gender: userRedux.gender,
+                email: userRedux.email,
+                phonenumber: userRedux.phonenumber,
+                avatar: userRedux?.image,
+                role: userRedux.role,
+            });
+        }
+    }, [userRedux]);
+    console.log(userRedux)
+    let subtitle;
+
+    const afterOpenModal = () => {
+        subtitle.style.color = '#f00';
+    };
     const handleOnchangeImg = async (e) => {
         let data = e.target.files;
         let files = data[0];
+
         if (files) {
             let base64 = await CommonUtils.getBase64(files);
             setState({
                 ...state,
                 avatar: base64,
             });
-            let objectUrl = URL.createObjectURL(files);
-            setReviewAvatar(objectUrl);
+            setReviewAvatar(e);
         }
     };
     const handleSaveUser = async () => {
         let res = await handleEditUser(state, user?.accessToken, dispatch, axiosJWT);
         if (res.errCode === 0) {
             toast.success(res.errMessage);
+            FuncToggleModal();
         } else {
             toast.error(res.errMessage);
         }
@@ -115,20 +129,30 @@ function EditUser() {
     const handleOnchangeInput = (e, id) => {
         e.preventDefault();
         let copyState = { ...state };
+
         copyState[id] = e.target.value;
+
         setState(copyState);
     };
 
-
     return (
         <>
-            <div className={`dark:text-white dark:placeholder-white ${cx('new')}`}>
-                <div className={cx('new-container')}>
-                    <div className={`relative ${cx('top')}`}>
-                        <h1 className="text-blue-900">Edit user</h1>
-                        <button type="button"  onClick={(e) => handleSaveUser(e)} className="absolute right-6 top-2  inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
-                            Send
+            <div>
+                <Modal
+                    isOpen={isOpen}
+                    onAfterOpen={afterOpenModal}
+                    onRequestClose={FuncToggleModal}
+                    style={customStyles}
+                    contentLabel="Example Modal"
+                >
+                    <div className={cx('header')}>
+                        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Edit User</h2>
+                        <button className={cx('close')} onClick={FuncToggleModal}>
+                            close
                         </button>
+                    </div>
+                    <div className={cx('top')}>
+                        <h1>Edit user</h1>
                     </div>
                     <div className={cx('bottom')}>
                         <div className={`${cx('left')} relative`}>
@@ -233,10 +257,13 @@ function EditUser() {
                                         placeholder="Ho Chi Minh"
                                     />
                                 </div>
+                                <div className={cx('btnSave')} onClick={(e) => handleSaveUser(e)}>
+                                    Send
+                                </div>
                             </form>
                         </div>
                     </div>
-                </div>
+                </Modal>
             </div>
         </>
     );

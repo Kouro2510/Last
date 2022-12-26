@@ -20,7 +20,6 @@ function App() {
                <Route path={config.routes.employee}>
                    <Route index element={<LayoutDashBoard><List /></LayoutDashBoard>}/>
                    <Route path={config.routes.single} element={<LayoutDashBoard><Single /></LayoutDashBoard>}/>
-                   <Route path={config.routes.edit} element={<LayoutDashBoard><EditUser/></LayoutDashBoard>}/>
                    <Route
                        path={config.routes.new}
                        element={<LayoutDashBoard><New title="Add New User" /></LayoutDashBoard>}
