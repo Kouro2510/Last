@@ -8,7 +8,7 @@ import Single from "~/Conpoments/Single/Single";
 import New from "~/Page/Admin/User/New/New";
 import {ToastContainer} from "react-toastify";
 import Home from "~/Page/Web/Home";
-import Edit from "~/Page/Admin/User/Edit/Edit";
+import EditUser from "~/Page/Admin/User/Edit/Edit";
 
 
 function App() {
@@ -20,13 +20,10 @@ function App() {
                <Route path={config.routes.employee}>
                    <Route index element={<LayoutDashBoard><List /></LayoutDashBoard>}/>
                    <Route path={config.routes.single} element={<LayoutDashBoard><Single /></LayoutDashBoard>}/>
+                   <Route path={config.routes.edit} element={<LayoutDashBoard><EditUser/></LayoutDashBoard>}/>
                    <Route
                        path={config.routes.new}
                        element={<LayoutDashBoard><New title="Add New User" /></LayoutDashBoard>}
-                   />
-                   <Route
-                       path={config.routes.edit}
-                       element={<LayoutDashBoard><Edit title="Edit New User" /></LayoutDashBoard>}
                    />
                </Route>
                <Route path={config.routes.home} element={<Home/>}/>

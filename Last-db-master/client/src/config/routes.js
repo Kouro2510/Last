@@ -3,7 +3,7 @@ const routes = {
     dashboard: '/admin',
     login: '/login',
     new: 'new',
-    edit:'edit',
+    edit:'edit/:id',
     employee: '/admin/employee',
     single: 'details/:id',
     manage_doctor: '/admin/manage-doctor',

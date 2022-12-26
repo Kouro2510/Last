@@ -27,11 +27,10 @@ const Login = async (req, res) => {
 };
 const RefreshToken = async (req, res) => {
     let refreshToken = req.cookies.refreshToken;
-    let refreshTokenOld = req.cookies.refreshToken;
 
     if (!refreshToken) return res.status(401).json("You're not authenticate");
 
-    let verifyRefreshToken = await authService.RefreshToken(refreshToken,refreshTokenOld);
+    let verifyRefreshToken = await authService.RefreshToken(refreshToken);
 
     res.cookie('refreshToken', verifyRefreshToken.refreshToken, {
         httpOnly: true,

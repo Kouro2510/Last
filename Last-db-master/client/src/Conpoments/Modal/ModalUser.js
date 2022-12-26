@@ -12,8 +12,9 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import { loginSuccess } from '~/redux/authSlice';
 import { refreshToken } from '~/services';
-import { handleEditUser } from '~/redux/apiReques';
+import {getDetailUser, handleEditUser} from '~/redux/apiReques';
 import { toast } from 'react-toastify';
+import config from "~/config";
 
 const cx = classNames.bind(styles);
 
@@ -30,7 +31,7 @@ const customStyles = {
     },
 };
 
-function ModalUser({ isOpen, FuncToggleModal }) {
+function EditUser({ isOpen, FuncToggleModal }) {
     const userRedux = useSelector((state) => state.user.userInfo?.user);
     const user = useSelector((state) => state.auth.login?.currentUser);
 
@@ -44,12 +45,11 @@ function ModalUser({ isOpen, FuncToggleModal }) {
         password: '',
         phonenumber: '',
         avatar: '',
-        positionId: 'None',
-        roleId: 'Doctor',
+        role: '',
     });
 
     const dispatch = useDispatch();
-    useNavigate();
+    const navigate=useNavigate();
     let axiosJWT = axios.create({
         baseURL: process.env.REACT_APP_BACKEND_URL,
     });
@@ -73,7 +73,15 @@ function ModalUser({ isOpen, FuncToggleModal }) {
             return Promise.reject(err);
         },
     );
-
+    useEffect(() => {
+        if (!user) {
+            navigate(config.routes.login);
+        }
+        const fetch = async () => {
+            await getDetailUser( user?.accessToken, dispatch, axiosJWT);
+        };
+        fetch();
+    }, [isOpen, user]);
     useEffect(() => {
         if (userRedux) {
             setState({
@@ -85,8 +93,7 @@ function ModalUser({ isOpen, FuncToggleModal }) {
                 email: userRedux.email,
                 phonenumber: userRedux.phonenumber,
                 avatar: userRedux?.image,
-                positionId: userRedux.positionId,
-                roleId: userRedux.roleId,
+                role: userRedux.role,
             });
         }
     }, [userRedux]);
@@ -121,9 +128,7 @@ function ModalUser({ isOpen, FuncToggleModal }) {
     const handleOnchangeInput = (e, id) => {
         e.preventDefault();
         let copyState = { ...state };
-
         copyState[id] = e.target.value;
-
         setState(copyState);
     };
 
@@ -144,7 +149,7 @@ function ModalUser({ isOpen, FuncToggleModal }) {
                         </button>
                     </div>
                     <div className={cx('top')}>
-                        <h1>Add new user</h1>
+                        <h1>Edit user</h1>
                     </div>
                     <div className={cx('bottom')}>
                         <div className={cx('left')}>
@@ -169,7 +174,7 @@ function ModalUser({ isOpen, FuncToggleModal }) {
                                         value={state.firstName}
                                         onChange={(e) => handleOnchangeInput(e, 'firstName')}
                                         type="text"
-                                        placeholder="John"
+                                        placeholder="First Name"
                                     />
                                 </div>
                                 <div className={cx('form-input')}>
@@ -178,7 +183,7 @@ function ModalUser({ isOpen, FuncToggleModal }) {
                                         value={state.lastName}
                                         onChange={(e) => handleOnchangeInput(e, 'lastName')}
                                         type="text"
-                                        placeholder="Wick"
+                                        placeholder="Last Name"
                                     />
                                 </div>
                                 <div className={cx('form-input')}>
@@ -196,8 +201,7 @@ function ModalUser({ isOpen, FuncToggleModal }) {
                                         value={state.email}
                                         onChange={(e) => handleOnchangeInput(e, 'email')}
                                         type="email"
-                                        readOnly
-                                        placeholder="thanhhoa@gmail.com"
+                                        placeholder="Email ex exmple@gmail.com"
                                     />
                                 </div>
                                 <div className={cx('form-input')}>
@@ -212,8 +216,7 @@ function ModalUser({ isOpen, FuncToggleModal }) {
                                 <div className={cx('form-input')}>
                                     <label>Password</label>
                                     <input
-                                        disabled="disabled"
-                                        value="1213465466"
+                                        value="********"
                                         onChange={(e) => handleOnchangeInput(e, 'password')}
                                         type="password"
                                     />
@@ -224,7 +227,7 @@ function ModalUser({ isOpen, FuncToggleModal }) {
                                         value={state.address}
                                         onChange={(e) => handleOnchangeInput(e, 'address')}
                                         type="text"
-                                        placeholder="A16/5 ap 1"
+                                        placeholder="Address"
                                     />
                                 </div>
                                 <div className={cx('btnSave')} onClick={(e) => handleSaveUser(e)}>
@@ -239,4 +242,4 @@ function ModalUser({ isOpen, FuncToggleModal }) {
     );
 }
 
-export default ModalUser;
+export default EditUser;

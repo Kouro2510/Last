@@ -170,7 +170,7 @@ export const getDetailUser = async (id, accessToken, dispatch, axiosJWT) => {
 export const handleEditUser = async (data, accessToken, dispatch, axiosJWT) => {
     dispatch(editUserStart());
     try {
-        const res = await axiosJWT.put('/api/editUser', data, { headers: { token: `Bearer ${accessToken}` } });
+        const res = await axiosJWT.put(`/api/editUser`, data, { headers: { token: `Bearer ${accessToken}` } });
 
         if (res.data.errCode === 0) {
             dispatch(editUserSuccess());

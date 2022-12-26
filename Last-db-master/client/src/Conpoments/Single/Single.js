@@ -76,8 +76,8 @@ function Single() {
         const fetch = async () => {
             await getDetailUser(id, user?.accessToken, dispatch, axiosJWT);
         };
-        fetch().then(r => r);
-    }, [axiosJWT, dispatch, id, isOpen, navigate, user]);
+        fetch();
+    }, [isOpen, user]);
 
     const OpenModal = () => {
         setIsOpen(true);

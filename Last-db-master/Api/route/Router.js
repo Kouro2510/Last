@@ -14,7 +14,7 @@ let initWebRoutes = (app) => {
     router.post("/api/login",authController.Login);
     router.put('/api/edituser', userController.EditUser);
     router.delete('/api/deleteuser',userController.DeleteUser);
-    router.get('/api/getuserinfobyid', userController.GetUserInfoById);
+    router.get('/api/getUserInfoById',middlewareController.verifyToken, userController.GetUserInfoById);
     router.get("/api/getallblog",blogController.GetAllBlog);
     router.post("/api/createblog",blogController.createBlog);
     router.put('/api/editblog', blogController.EditBlog);

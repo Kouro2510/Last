@@ -133,7 +133,7 @@ let Logout = (id) => {
         }
     });
 };
-let RefreshToken = (refreshToken,refreshTokenOld) => {
+let RefreshToken = (refreshToken) => {
     return new Promise(async (resolve, reject) => {
         try {
             let user = await db.User.findOne({
@@ -157,7 +157,7 @@ let RefreshToken = (refreshToken,refreshTokenOld) => {
                         rememberToken: newFreshToken,
                     },
                     {
-                        where: { rememberToken: refreshTokenOld },
+                        where: { id: user.id },
                     },
                 );
 

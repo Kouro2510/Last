@@ -6,19 +6,20 @@ import {
 import { useMovieData } from '@mui/x-data-grid-generator';
 import { useDispatch, useSelector } from 'react-redux';
 import images from "~/Asset/Image";
-import { Link, useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import config from '~/config';
 import jwt_decode from 'jwt-decode';
 import { deleteUserById } from '~/redux/apiReques';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { axiosMiddle } from '~/services/axiosJWT';
+import ModalUser from "~/Conpoments/Modal/ModalUser";
 
 const cx = classNames.bind(styles);
 function DatatableUser() {
     let allUsers = useSelector((state) => state.user.users.allUsers?.data);
     const user = useSelector((state) => state.auth.login?.currentUser);
-
+    let [isOpen, setIsOpen] = useState(false);
     let [rows, setRows] = useState([]);
     let [checkBoxSelection, setCheckBoxSelection] = useState(false);
 
@@ -44,8 +45,8 @@ function DatatableUser() {
                     image: item.Image?.photo,
                     gender: item.gender,
                     address: item.address,
-                    role: item.roleId,
-                    phoneNumber: item.phonenumber,
+                    role: item.role,
+                    phoneNumber: item.phoneNumber,
                 };
             });
 
@@ -53,17 +54,17 @@ function DatatableUser() {
         }
     }, [allUsers]);
     const columns = [
-        { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'username', headerName: 'Username', width: 200 },
+        { field: 'id', headerName: 'ID', width: 30 },
+        { field: 'username', headerName: 'Username', width: 230 },
         {
             field: 'firstname',
-            headerName: 'First',
+            headerName: 'First Name',
             width: 150,
         },
         {
             field: 'lastname',
-            headerName: 'Name',
-            width: 150,
+            headerName: 'Last Name',
+            width: 190,
         },
         {
             headerName: 'Avatar',
@@ -114,8 +115,20 @@ function DatatableUser() {
             renderCell: (params) => {
                 return (
                     <>
-                        <button className={`inline-block px-6 py-2 text-blue-600  font-medium text-xs leading-tight uppercase rounded shadow-md   active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out   gap-12 ${cx('view-button')}`} onClick={() => handleSubmit(params.row.id)}>View</button>
+                        <button className={`inline-block px-6 py-2 text-blue-600  font-medium text-xs leading-tight uppercase rounded shadow-md   active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out   gap-12 ${cx('view-button')}`}  onClick={() => OpenModal(params.row.id)}>Edit</button>
                         <button className={`inline-block px-6 py-2 text-red-600  font-medium text-xs leading-tight uppercase rounded shadow-md   active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ${cx('delete-button')}`} onClick={() => handleDeleteUser(params.row.id)}>Delete</button>
+                    </>
+                );
+            },
+        },
+        {
+            field: 'Details',
+            headerName: 'Details',
+            width: 100,
+            renderCell: (params) => {
+                return (
+                    <>
+                        <button className={`inline-block px-6 py-2 text-blue-600  font-medium text-xs leading-tight uppercase rounded shadow-md   active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out   gap-12 ${cx('view-button')}`} onClick={() => handleSubmit(params.row.id)}>View</button>
                     </>
                 );
             },
@@ -128,7 +141,6 @@ function DatatableUser() {
     const handleSubmit = (user) => {
         navigate(`details/${user}`);
     };
-
     const handleDeleteUser = async (id) => {
         let axiosJWT = await axiosMiddle(jwt_decode, user?.accessToken, user, dispatch);
         let res = await deleteUserById(id, user?.accessToken, dispatch, axiosJWT);
@@ -139,7 +151,12 @@ function DatatableUser() {
             toast.error(res.errMessage);
         }
     };
-
+    const OpenModal = (user) => {
+        navigate(`edit/${user}`);
+    };
+    const toggleModal = () => {
+        setIsOpen(!isOpen);
+    };
     return (
         <>
             <div className={cx('datatable')}>
@@ -166,6 +183,7 @@ function DatatableUser() {
                     rowsPerPageOptions={[9]}
                 />
             </div>
+            <ModalUser isOpen={isOpen} FuncToggleModal={() => toggleModal()} />
         </>
     );
 }
