@@ -5,6 +5,7 @@ const routes = {
     new: 'new',
     edit:'edit/:id',
     employee: '/admin/employee',
+    customer:'/admin/customer',
     single: 'details/:id',
     manage_doctor: '/admin/manage-doctor',
     manage_schedule: '/admin/manage_schedule',

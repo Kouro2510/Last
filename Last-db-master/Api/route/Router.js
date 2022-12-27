@@ -15,6 +15,8 @@ let initWebRoutes = (app) => {
     router.put('/api/edituser', userController.EditUser);
     router.delete('/api/deleteuser',userController.DeleteUser);
     router.get('/api/getUserInfoById',middlewareController.verifyToken, userController.GetUserInfoById);
+    router.get("/api/getallcustomer", middlewareController.verifyToken,userController.GetAllCustomer);
+
     router.get("/api/getallblog",blogController.GetAllBlog);
     router.post("/api/createblog",blogController.createBlog);
     router.put('/api/editblog', blogController.EditBlog);
@@ -28,25 +30,20 @@ let initWebRoutes = (app) => {
     router.post(
         '/api/createNewBrand',
         middlewareController.verifyToken,
-        middlewareController.verifyTokenAndAdminAuth,
         productController.createNewBrand,
     );
     router.get(
         '/api/getAllBrands',
-        // middlewareController.verifyToken,
-        // middlewareController.verifyTokenAndAdminAuth,
         productController.getAllBrands,
     );
     router.put(
         '/api/editBrand',
         middlewareController.verifyToken,
-        middlewareController.verifyTokenAndAdminAuth,
         productController.editBrand,
     );
     router.delete(
         '/api/deleteBrand',
         middlewareController.verifyToken,
-        middlewareController.verifyTokenAndAdminAuth,
         productController.DeleteBrand,
     );
 
@@ -54,13 +51,11 @@ let initWebRoutes = (app) => {
     router.post(
         '/api/createNewCategory',
         middlewareController.verifyToken,
-        middlewareController.verifyTokenAndAdminAuth,
         productController.createNewCategory,
     );
     router.get(
         '/api/getAllCategoryAdmin',
         middlewareController.verifyToken,
-        middlewareController.verifyTokenAndAdminAuth,
         productController.getAllCategoryAdmin,
     );
 
@@ -68,13 +63,11 @@ let initWebRoutes = (app) => {
     router.put(
         '/api/editCategory',
         middlewareController.verifyToken,
-        middlewareController.verifyTokenAndAdminAuth,
         productController.editCategory,
     );
     router.delete(
         '/api/deleteCategory',
         middlewareController.verifyToken,
-        middlewareController.verifyTokenAndAdminAuth,
         productController.DeleteCategory,
     );
 
@@ -82,8 +75,7 @@ let initWebRoutes = (app) => {
     router.post(
         '/api/createNewProduct',
         middlewareController.verifyToken,
-        middlewareController.verifyTokenAndAdminAuth,
-        productController.saveDetailProduct,
+       productController.saveDetailProduct,
     );
     router.delete(
         '/api/deleteProduct',

@@ -19,17 +19,8 @@ const verifyToken = (req, res, next) => {
     }
 };
 
-const verifyTokenAndAdminAuth = (req, res, next) => {
-    verifyToken(req, res, () => {
-        if (req.user.id === req.body.id || req.user.role === 'Admin') {
-            next();
-        } else {
-            return res.status(200).json("You're not allowed to access permission");
-        }
-    });
-};
+
 
 module.exports = {
-    verifyToken,
-    verifyTokenAndAdminAuth,
+    verifyToken
 };

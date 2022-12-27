@@ -1,5 +1,5 @@
-import Sidebar from "~/Conpoments/SideBar/Sidebar";
-import Navbar from "~/Conpoments/Navbar/Navbar";
+import Sidebar from "~/Conpoments/Admin/SideBar/Sidebar";
+import Navbar from "~/Conpoments/Admin/Navbar/Navbar";
 
 
 const LayoutDashBoard = ({children}) => {

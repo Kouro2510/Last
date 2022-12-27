@@ -1,18 +1,14 @@
-import styles from './Brands.module.scss';
-import classNames from 'classnames/bind';
 import { useEffect } from 'react';
-import { getAllBrands } from '~/redux/apiReques';
+import { getAllUsersRedux } from '~/redux/apiReques';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import config from '~/config';
 import jwt_decode from 'jwt-decode';
-import DatatableBrands from "~/Conpoments/Admin/Datatable/DatatableBrands";
+import DatatableUser from "~/Conpoments/Admin/Datatable/DatatableUsers";
 import { axiosMiddle } from '~/services/axiosJWT';
 
-const cx = classNames.bind(styles);
-function Brands() {
+function Employee() {
     const user = useSelector((state) => state.auth.login?.currentUser);
-
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -23,15 +19,15 @@ function Brands() {
         const fetch = async () => {
             let axiosJWT = await axiosMiddle(jwt_decode, user?.accessToken, user, dispatch);
 
-            await getAllBrands(user?.accessToken, dispatch, axiosJWT, navigate);
+            await getAllUsersRedux(user?.accessToken, dispatch, axiosJWT, navigate);
         };
         fetch();
-    }, [user]);
+    }, [dispatch, navigate, user]);
     return (
         <>
-            <DatatableBrands />
+            <DatatableUser />
         </>
     );
 }
 
-export default Brands;
+export default Employee;

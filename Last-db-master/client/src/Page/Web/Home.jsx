@@ -1,9 +1,14 @@
-const Home = () => {
+import Header from "~/Conpoments/Web/Header/Header";
+import Footer from "~/Conpoments/Web/Footer/Footer";
 
-  return(
-      <div>
-          <p>This is home page</p>
-      </div>
-  )
+const Home = ({children}) => {
+
+    return (
+        <section className={` dark:bg-gray-900 `}>
+            <Header/>
+            {children}
+            <Footer/>
+        </section>
+    )
 }
 export default Home;

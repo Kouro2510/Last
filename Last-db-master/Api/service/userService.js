@@ -231,10 +231,44 @@ let GetUserInfoById = (id) => {
         }
     });
 };
+let GetAllCustomer = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let user = await db.User.findAll({
+                where:{role:'Customers'},
+                include: [{
+                    model: db.Image, attributes: ['photo'],
+                },],
+            });
+
+            console.log('check user', user);
+
+            user.forEach((item) => {
+                if (item?.Image?.photo) {
+                    item.Image.photo = new Buffer(item.Image.photo, 'base64').toString('binary');
+                }
+            });
+
+            if (user) {
+                resolve({
+                    errCode: 0, data: user,
+                });
+            } else {
+                resolve({
+                    errCode: 1, errMessage: 'Cannot find user',
+                });
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 module.exports = {
     GetAllEmployee,
     CreateEmployee,
     EditUser,
     DeleteUser,
-    GetUserInfoById
+    GetUserInfoById,
+    GetAllCustomer
 }

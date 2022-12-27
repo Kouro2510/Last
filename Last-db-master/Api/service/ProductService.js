@@ -29,7 +29,7 @@ const createNewBrand = (data) => {
 
                     if (data.photo) {
                         await db.Image.create({
-                            brand_id: brand.id,
+                            brandId: brand.id,
                             photo: data.photo,
                         });
                     }
@@ -101,7 +101,7 @@ const editBrand = (data) => {
                         photo: data.photo,
                     },
                     {
-                        where: { brand_id: data.id },
+                        where: { brandId: data.id },
                     },
                 );
                 resolve({
@@ -130,17 +130,17 @@ const DeleteBrand = (id) => {
             if (res) {
                 await db.Product.update(
                     {
-                        brand_id: null,
+                        brandId: null,
                     },
                     {
-                        where: { brand_id: res.id },
+                        where: { brandId: res.id },
                     },
                 );
                 await db.Brand.destroy({
                     where: { id: id },
                 });
                 await db.Image.destroy({
-                    where: { brand_id: id },
+                    where: { brandId: id },
                 });
                 resolve({
                     errCode: 0,
@@ -185,7 +185,7 @@ const createNewCategory = (data) => {
                         status: data.status,
                     });
                     await db.Image.create({
-                        cat_id: res.id,
+                        catId: res.id,
                         photo: data.image,
                     });
 
@@ -347,7 +347,7 @@ const editCategory = (data) => {
                         photo: data.image,
                     },
                     {
-                        where: { cat_id: data.id },
+                        where: { catId: data.id },
                     },
                 );
 
@@ -377,10 +377,10 @@ const DeleteCategory = (id) => {
             if (res) {
                 await db.Product.update(
                     {
-                        cat_id: null,
+                        catId: null,
                     },
                     {
-                        where: { cat_id: res.id },
+                        where: { catId: res.id },
                     },
                 );
                 await db.Category.destroy({
@@ -388,7 +388,7 @@ const DeleteCategory = (id) => {
                 });
 
                 await db.Image.destroy({
-                    where: { cat_id: id },
+                    where: { catId: id },
                 });
 
                 resolve({
@@ -406,16 +406,16 @@ const saveDetailProduct = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (
-                !data.title ||
-                !data.unit_of_product ||
-                !data.photo ||
-                !data.stock ||
-                !data.price ||
-                !data.condition ||
-                !data.status ||
-                !data.brand_id ||
-                !data.cat_id ||
-                !data.action
+                !data.title
+                // !data.unit_of_product ||
+                // !data.photo ||
+                // !data.stock ||
+                // !data.price ||
+                // !data.condition ||
+                // !data.status ||
+                // !data.brandId ||
+                // !data.catId ||
+                // !data.action
             ) {
                 resolve({
                     errCode: 1,
@@ -433,8 +433,8 @@ const saveDetailProduct = (data) => {
                         });
                     } else {
                         let res = await db.Product.create({
-                            cat_id: data.cat_id,
-                            brand_id: data.brand_id,
+                            catId: data.catId,
+                            brandId: data.brandId,
                             title: data.title,
                             photo: data.photo,
                             type: data.type,
@@ -448,7 +448,7 @@ const saveDetailProduct = (data) => {
                         });
 
                         await db.Markdown.create({
-                            product_id: res.id,
+                            productId: res.id,
                             descriptionHtml: data.descriptionHtml,
                             descriptionMarkdown: data.descriptionMarkdown,
                             specificationHtml: data.specificationHtml,
@@ -464,7 +464,7 @@ const saveDetailProduct = (data) => {
                         data.photo.map((item) => {
                             let obj = {};
 
-                            obj.product_id = res.id;
+                            obj.productId = res.id;
                             obj.photo = item;
 
                             return arrPhoto.push(obj);
@@ -483,8 +483,8 @@ const saveDetailProduct = (data) => {
                         where: { id: data.id },
                     });
                     if (res) {
-                        res.cat_id = data.cat_id;
-                        res.brand_id = data.brand_id;
+                        res.catId = data.catId;
+                        res.brandId = data.brandId;
                         res.title = data.title;
                         res.photo = data.photo;
                         res.type = data.type;
@@ -499,7 +499,7 @@ const saveDetailProduct = (data) => {
                     }
 
                     let productMarkdown = await db.Markdown.findOne({
-                        where: { product_id: res.id },
+                        where: { productId: res.id },
                     });
 
                     if (productMarkdown) {
@@ -515,13 +515,13 @@ const saveDetailProduct = (data) => {
                     }
 
                     await db.Image.destroy({
-                        where: { product_id: res.id },
+                        where: { productId: res.id },
                     });
                     let arrPhoto = [];
                     data.photo.map((item) => {
                         let obj = {};
 
-                        obj.product_id = res.id;
+                        obj.productId = res.id;
                         obj.photo = item;
 
                         return arrPhoto.push(obj);
@@ -550,7 +550,7 @@ const DeleteProduct = (id) => {
 
             if (res) {
                 await db.Markdown.destroy({
-                    where: { product_id: id },
+                    where: { productId: id },
                 });
                 await db.Product.destroy({
                     where: { id: id },
@@ -602,13 +602,13 @@ const getProductByCategory = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             //filter brand and hasn't category
-            if (data.brand_id && !data.id) {
+            if (data.brandId && !data.id) {
                 //filter with range price
                 if (data.priceA) {
                     if (data.action === 'trend') {
                         let res = await db.Product.findAll({
                             where: {
-                                brand_id: data.brand_id,
+                                brandId: data.brandId,
                                 condition: 'hot',
                                 [Op.and]: [
                                     {
@@ -655,7 +655,7 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'sold') {
                         let res = await db.Product.findAll({
                             where: {
-                                brand_id: data.brand_id,
+                                brandId: data.brandId,
 
                                 [Op.and]: [
                                     {
@@ -707,7 +707,7 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'discount') {
                         let res = await db.Product.findAll({
                             where: {
-                                brand_id: data.brand_id,
+                                brandId: data.brandId,
 
                                 [Op.and]: [
                                     {
@@ -759,7 +759,7 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'priceLow') {
                         let res = await db.Product.findAll({
                             where: {
-                                brand_id: data.brand_id,
+                                brandId: data.brandId,
 
                                 [Op.and]: [
                                     {
@@ -811,7 +811,7 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'priceHigh') {
                         let res = await db.Product.findAll({
                             where: {
-                                brand_id: data.brand_id,
+                                brandId: data.brandId,
 
                                 [Op.and]: [
                                     {
@@ -866,7 +866,7 @@ const getProductByCategory = (data) => {
                     if (data.action === 'trend') {
                         let res = await db.Product.findAll({
                             where: {
-                                brand_id: data.brand_id,
+                                brandId: data.brandId,
                                 condition: 'hot',
                             },
                             attributes: {
@@ -906,7 +906,7 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'sold') {
                         let res = await db.Product.findAll({
                             where: {
-                                brand_id: data.brand_id,
+                                brandId: data.brandId,
 
                                 [Op.and]: [
                                     {
@@ -953,7 +953,7 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'discount') {
                         let res = await db.Product.findAll({
                             where: {
-                                brand_id: data.brand_id,
+                                brandId: data.brandId,
 
                                 [Op.and]: [
                                     {
@@ -1000,7 +1000,7 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'priceLow') {
                         let res = await db.Product.findAll({
                             where: {
-                                brand_id: data.brand_id,
+                                brandId: data.brandId,
 
                                 [Op.and]: [
                                     {
@@ -1047,7 +1047,7 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'priceHigh') {
                         let res = await db.Product.findAll({
                             where: {
-                                brand_id: data.brand_id,
+                                brandId: data.brandId,
 
                                 [Op.and]: [
                                     {
@@ -1093,14 +1093,14 @@ const getProductByCategory = (data) => {
                         }
                     }
                 }
-            } else if (data.id && !data.brand_id) {
+            } else if (data.id && !data.brandId) {
                 //filter category and hasn't brand
                 //filter range price
                 if (data.priceA) {
                     if (data.action === 'trend') {
                         let res = await db.Product.findAll({
                             where: {
-                                cat_id: data.id,
+                                catId: data.id,
                                 condition: 'hot',
                                 [Op.and]: [
                                     {
@@ -1147,7 +1147,7 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'sold') {
                         let res = await db.Product.findAll({
                             where: {
-                                cat_id: data.id,
+                                catId: data.id,
 
                                 [Op.and]: [
                                     {
@@ -1199,7 +1199,7 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'discount') {
                         let res = await db.Product.findAll({
                             where: {
-                                cat_id: data.id,
+                                catId: data.id,
 
                                 [Op.and]: [
                                     {
@@ -1251,7 +1251,7 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'priceLow') {
                         let res = await db.Product.findAll({
                             where: {
-                                cat_id: data.id,
+                                catId: data.id,
 
                                 [Op.and]: [
                                     {
@@ -1303,7 +1303,7 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'priceHigh') {
                         let res = await db.Product.findAll({
                             where: {
-                                cat_id: data.id,
+                                catId: data.id,
 
                                 [Op.and]: [
                                     {
@@ -1358,7 +1358,7 @@ const getProductByCategory = (data) => {
                     if (data.action === 'trend') {
                         let res = await db.Product.findAll({
                             where: {
-                                cat_id: data.id,
+                                catId: data.id,
                                 condition: 'hot',
                             },
                             attributes: {
@@ -1398,7 +1398,7 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'sold') {
                         let res = await db.Product.findAll({
                             where: {
-                                cat_id: data.id,
+                                catId: data.id,
 
                                 [Op.and]: [
                                     {
@@ -1445,7 +1445,7 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'discount') {
                         let res = await db.Product.findAll({
                             where: {
-                                cat_id: data.id,
+                                catId: data.id,
 
                                 [Op.and]: [
                                     {
@@ -1492,7 +1492,7 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'priceLow') {
                         let res = await db.Product.findAll({
                             where: {
-                                cat_id: data.id,
+                                catId: data.id,
 
                                 [Op.and]: [
                                     {
@@ -1539,7 +1539,7 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'priceHigh') {
                         let res = await db.Product.findAll({
                             where: {
-                                cat_id: data.id,
+                                catId: data.id,
 
                                 [Op.and]: [
                                     {
@@ -1585,13 +1585,13 @@ const getProductByCategory = (data) => {
                         }
                     }
                 }
-            } else if (data.brand_id && data.id) {
+            } else if (data.brandId && data.id) {
                 if (data.priceA) {
                     if (data.action === 'trend') {
                         let res = await db.Product.findAll({
                             where: {
-                                cat_id: data.id,
-                                brand_id: data.brand_id,
+                                catId: data.id,
+                                brandId: data.brandId,
                                 condition: 'hot',
                                 [Op.and]: [
                                     {
@@ -1638,8 +1638,8 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'sold') {
                         let res = await db.Product.findAll({
                             where: {
-                                cat_id: data.id,
-                                brand_id: data.brand_id,
+                                catId: data.id,
+                                brandId: data.brandId,
 
                                 [Op.and]: [
                                     {
@@ -1691,8 +1691,8 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'discount') {
                         let res = await db.Product.findAll({
                             where: {
-                                cat_id: data.id,
-                                brand_id: data.brand_id,
+                                catId: data.id,
+                                brandId: data.brandId,
 
                                 [Op.and]: [
                                     {
@@ -1744,8 +1744,8 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'priceLow') {
                         let res = await db.Product.findAll({
                             where: {
-                                cat_id: data.id,
-                                brand_id: data.brand_id,
+                                catId: data.id,
+                                brandId: data.brandId,
 
                                 [Op.and]: [
                                     {
@@ -1797,8 +1797,8 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'priceHigh') {
                         let res = await db.Product.findAll({
                             where: {
-                                cat_id: data.id,
-                                brand_id: data.brand_id,
+                                catId: data.id,
+                                brandId: data.brandId,
 
                                 [Op.and]: [
                                     {
@@ -1853,8 +1853,8 @@ const getProductByCategory = (data) => {
                     if (data.action === 'trend') {
                         let res = await db.Product.findAll({
                             where: {
-                                cat_id: data.id,
-                                brand_id: data.brand_id,
+                                catId: data.id,
+                                brandId: data.brandId,
                                 condition: 'hot',
                             },
                             attributes: {
@@ -1894,8 +1894,8 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'sold') {
                         let res = await db.Product.findAll({
                             where: {
-                                cat_id: data.id,
-                                brand_id: data.brand_id,
+                                catId: data.id,
+                                brandId: data.brandId,
 
                                 [Op.and]: [
                                     {
@@ -1942,8 +1942,8 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'discount') {
                         let res = await db.Product.findAll({
                             where: {
-                                cat_id: data.id,
-                                brand_id: data.brand_id,
+                                catId: data.id,
+                                brandId: data.brandId,
 
                                 [Op.and]: [
                                     {
@@ -1990,8 +1990,8 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'priceLow') {
                         let res = await db.Product.findAll({
                             where: {
-                                cat_id: data.id,
-                                brand_id: data.brand_id,
+                                catId: data.id,
+                                brandId: data.brandId,
 
                                 [Op.and]: [
                                     {
@@ -2038,8 +2038,8 @@ const getProductByCategory = (data) => {
                     } else if (data.action === 'priceHigh') {
                         let res = await db.Product.findAll({
                             where: {
-                                cat_id: data.id,
-                                brand_id: data.brand_id,
+                                catId: data.id,
+                                brandId: data.brandId,
 
                                 [Op.and]: [
                                     {
@@ -2212,7 +2212,7 @@ const getProductInfoById = (id) => {
             });
 
             let user = await db.User.findAll({
-                where: { review_id: id },
+                where: { reviewId: id },
                 attributes: ['firstName', 'lastName'],
                 include: [
                     {
@@ -2269,8 +2269,8 @@ const ReviewProduct = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             await db.Review.create({
-                user_id: data.user_id,
-                product_id: data.product_id,
+                userId: data.userId,
+                productId: data.productId,
                 rate: data.rate,
                 title: data.title,
                 description: data.description,
@@ -2279,10 +2279,10 @@ const ReviewProduct = (data) => {
 
             await db.User.update(
                 {
-                    review_id: data.product_id,
+                    reviewId: data.productId,
                 },
                 {
-                    where: { id: data.user_id },
+                    where: { id: data.userId },
                 },
             );
 
@@ -2352,11 +2352,11 @@ const AddProductToCart = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             let res = await db.Cart.findOne({
-                where: { product_id: data.product_id },
+                where: { productId: data.productId },
             });
 
             let quantityProduct = await db.Product.findOne({
-                where: { id: data.product_id },
+                where: { id: data.productId },
             });
 
             if (data.quantity > quantityProduct.stock) {
@@ -2367,8 +2367,8 @@ const AddProductToCart = (data) => {
             } else {
                 if (!res) {
                     await db.Cart.create({
-                        product_id: data.product_id,
-                        user_id: data.user_id,
+                        productId: data.productId,
+                        userId: data.userId,
                         quantity: data.quantity,
                     });
                     resolve({
@@ -2378,7 +2378,7 @@ const AddProductToCart = (data) => {
                 } else {
                     if (data.quantity === 0) {
                         await db.Cart.destroy({
-                            where: { product_id: data.product_id, user_id: data.user_id },
+                            where: { productId: data.productId, userId: data.userId },
                         });
                     }
                     await db.Cart.update(
@@ -2386,7 +2386,7 @@ const AddProductToCart = (data) => {
                             quantity: data.quantity,
                         },
                         {
-                            where: { product_id: data.product_id, user_id: data.user_id },
+                            where: { productId: data.productId, userId: data.userId },
                         },
                     );
                     resolve({
@@ -2494,7 +2494,7 @@ const CreateOrder = (data) => {
         try {
             if (data.action === 'new') {
                 let user = await db.User.findOne({
-                    where: { id: data.user_id },
+                    where: { id: data.userId },
                 });
                 if (user) {
                     await db.User.update(
@@ -2506,7 +2506,7 @@ const CreateOrder = (data) => {
                             phonenumber: data.phonenumber,
                         },
                         {
-                            where: { id: data.user_id },
+                            where: { id: data.userId },
                         },
                     );
                 } else {
@@ -2517,7 +2517,7 @@ const CreateOrder = (data) => {
                 }
             }
             let res = await db.Order.create({
-                user_id: data.user_id,
+                userId: data.userId,
                 order_number: data.order_number,
                 coupon: data.coupon,
                 sub_total: data.sub_total,
@@ -2535,16 +2535,16 @@ const CreateOrder = (data) => {
             data.product.map((item) => {
                 let obj = {};
 
-                obj.product_id = item.product_id;
+                obj.productId = item.productId;
                 obj.quantity = item.quantity;
-                obj.order_id = res.id;
+                obj.orderId = res.id;
 
                 return arr.push(obj);
             });
             await db.ProductOrder.bulkCreate(arr);
-            arr.forEach(async (item) => {
+            for (const item of arr) {
                 let prod = await db.Product.findOne({
-                    where: { id: item.product_id },
+                    where: { id: item.productId },
                 });
                 if (prod) {
                     await db.Product.update(
@@ -2553,11 +2553,11 @@ const CreateOrder = (data) => {
                             stock: prod.stock - item.quantity,
                         },
                         {
-                            where: { id: item.product_id },
+                            where: { id: item.productId },
                         },
                     );
                 }
-            });
+            }
             let coup = await db.Coupon.findOne({
                 where: { code: data.coupon },
             });
@@ -2573,7 +2573,7 @@ const CreateOrder = (data) => {
             }
 
             await db.Cart.destroy({
-                where: { user_id: data.user_id },
+                where: { userId: data.userId },
             });
             resolve({
                 errCode: 0,

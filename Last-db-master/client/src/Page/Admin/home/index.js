@@ -1,6 +1,6 @@
 import styles from './Home.module.scss';
 import classNames from 'classnames/bind';
-import Widget from "~/Conpoments/Widget/Widget";
+import Widget from "~/Conpoments/Admin/Widget/Widget";
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import jwt_decode from 'jwt-decode';
@@ -8,8 +8,8 @@ import { getAllUsersRedux} from "~/redux/apiReques";
 import { useNavigate } from 'react-router-dom';
 import config from '~/config';
 import { axiosMiddle } from '~/services/axiosJWT';
-import Featured from "~/Conpoments/Featured/Featured";
-import Chart from "~/Conpoments/Chart/Chart";
+import Featured from "~/Conpoments/Admin/Featured/Featured";
+import Chart from "~/Conpoments/Admin/Chart/Chart";
 
 const cx = classNames.bind(styles);
 

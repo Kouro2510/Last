@@ -95,25 +95,6 @@ export const loginUser = async (username, password, dispatch, navigate) => {
     }
 };
 
-export const loginCus = async (dispatch, email, password, navigate) => {
-    dispatch(loginCustomerStart());
-    try {
-        const res = await loginCustomer(email, password);
-        dispatch(loginCustomerSuccess(res));
-        if (res.errCode === 0) {
-            if (res.user.role !== 'Admin') {
-                navigate(config.routes.home);
-            } else {
-                navigate(config.routes.customer_login);
-            }
-        }
-
-        return res;
-    } catch (e) {
-        dispatch(loginCustomerFail);
-    }
-};
-
 export const logoutUser = async (dispatch, axiosJWT, id, accessToken, navigate) => {
     console.log('check token', accessToken);
 
@@ -122,7 +103,7 @@ export const logoutUser = async (dispatch, axiosJWT, id, accessToken, navigate) 
         const res = await axiosJWT.get(`/api/logout?id=${id}`, { headers: { token: `Bearer ${accessToken}` } });
         if (res.data.errCode === 0) {
             dispatch(logoutSuccess());
-            navigate(config.routes.loginAdmin);
+            navigate(config.routes.login);
         } else {
             console.log(res);
             dispatch(logoutFail());
@@ -130,10 +111,9 @@ export const logoutUser = async (dispatch, axiosJWT, id, accessToken, navigate) 
     } catch (e) {
         console.log(e);
         dispatch(logoutFail());
-
-        // navigate(config.routes.loginAdmin);
     }
 };
+
 
 export const getAllUsersRedux = async (accessToken, dispatch, axiosJWT, navigate) => {
     dispatch(getUsersStart());
@@ -230,20 +210,20 @@ export const createNewUser = async (data, accessToken, dispatch, axiosJWT) => {
     }
 };
 
-export const createNewCustomer = async (dispatch, data) => {
-    dispatch(createUserStart());
+export const getAllCustomer = async (accessToken, dispatch, axiosJWT, navigate) => {
+    dispatch(getUsersStart());
     try {
-        const res = await request.post('/api/registerCustomer', data);
+        const res = await axiosJWT.get(`/api/getallcustomer`, { headers: { token: `Bearer ${accessToken}` } });
+
         if (res.data.errCode === 0) {
-            dispatch(createUserSuccess());
+            dispatch(getUsersSuccess(res));
         } else {
             console.log(res);
-            dispatch(createUserFail());
         }
-        return res.data;
     } catch (e) {
         console.log(e);
-        dispatch(createUserFail());
+        navigate(config.routes.login);
+        dispatch(getUsersFail());
     }
 };
 
@@ -277,7 +257,7 @@ export const getAllBrands = async (accessToken, dispatch, axiosJWT, navigate) =>
         }
     } catch (e) {
         console.log(e);
-        navigate(config.routes.loginAdmin);
+        navigate(config.routes.login);
         dispatch(getBrandsFail());
     }
 };
