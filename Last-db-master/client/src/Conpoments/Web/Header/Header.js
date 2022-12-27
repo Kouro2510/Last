@@ -4,16 +4,16 @@ import "./Header.scss"
 const Header = () => {
     return (
         <>
-            <div className="flex justify-end gap-3 pr-8 bg-black text-white pt-2 pb-4 sm:text-7xl ">
+            <div className="flex justify-end gap-3 pr-8 bg-black text-white pt-2 pb-4  ">
                 <a href="https://www.facebook.com/"><Facebook/></a>
                 <a href="https://www.instagram.com/"><Instagram/></a>
                 <a href="https://twitter.com/"><Twitter/></a>
-                <h4 className="flex"><Favorite/>Danh sách yêu thích</h4>
-                <h4 className="flex"><Person/> Đăng nhập</h4>
+                <h4 className="flex"><Favorite className="pr-2"/>Danh sách yêu thích</h4>
+                <h4 className="flex"><Person className="pr-2"/> Đăng nhập</h4>
             </div>
-            <div className="antialiased bg-gray-400">
-                <header className="lg:px-16 px-6 bg-white flex flex-wrap items-center lg:py-0 py-2">
-                    <div className="flex-1 flex justify-between items-center">
+            <div className="bg-gradient-to-r from-gray-100 via-[#bce1ff] to-gray-100">
+                <header className="lg:px-16 px-6 bg-white flex items-center lg:py-0 py-2">
+                    <div className="flex justify-between items-center">
                         <img src={images.logo} width="20%"/>
                     </div>
 
@@ -30,22 +30,20 @@ const Header = () => {
                             <ul className="lg:flex items-center justify-between text-base text-gray-700 pt-4 lg:pt-0">
                                 <li><a
                                     className="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400"
-                                    href="#">Home</a></li>
+                                    href="/Home">Home</a></li>
                                 <li><a
                                     className="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400"
-                                    href="#">About</a></li>
+                                    href="/about">About</a></li>
                                 <li><a
                                     className="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400"
-                                    href="#">Documentation</a></li>
+                                    href="/Product">Documentation</a></li>
                                 <li><a
                                     className="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400 lg:mb-0 mb-2"
-                                    href="#">Support</a></li>
+                                    href="/Contact">Support</a></li>
                             </ul>
                         </nav>
 
-
                     </div>
-
                 </header>
                 <hr/>
             </div>

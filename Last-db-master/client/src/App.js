@@ -7,12 +7,13 @@ import Employee from "~/Page/Admin/User/Render/Employee";
 import Single from "~/Conpoments/Admin/Single/Single";
 import New from "~/Conpoments/Admin/New/New"
 import {ToastContainer} from "react-toastify";
-import Home from "~/Page/Web/Home";
+import Home from "~/Page/Web/Home/Home";
 import Brands from "~/Page/Admin/Brand/Render/Brand";
 import Customer from "~/Page/Admin/Customer/Render/Customer";
 import Product from "~/Page/Admin/Product/Product";
 import NewProduct from "~/Conpoments/Admin/newProduct/NewProduct";
 import Category from "~/Page/Admin/Category/Render/Category";
+import LayoutHome from "~/Page/Web/LayoutHome/Home";
 
 
 function App() {
@@ -83,7 +84,7 @@ function App() {
                        }
                    />
                </Route>
-               <Route path={config.routes.home} element={<Home/>}/>
+                   <Route path={config.routes.home} index element={<LayoutHome><Home/></LayoutHome>}/>
            </Routes>
            <ToastContainer
                position="top-right"

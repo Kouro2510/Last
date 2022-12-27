@@ -1,14 +1,14 @@
 import Header from "~/Conpoments/Web/Header/Header";
 import Footer from "~/Conpoments/Web/Footer/Footer";
 
-const Home = ({children}) => {
+const LayoutHome = ({children}) => {
 
     return (
-        <section className={` dark:bg-gray-900 `}>
+        <section>
             <Header/>
             {children}
             <Footer/>
         </section>
     )
 }
-export default Home;
+export default LayoutHome;
